@@ -1,0 +1,44 @@
+curl and libcurl 8.19.1
+
+ Public curl releases:         274
+ Command line options:         273
+ curl_easy_setopt() options:   308
+ Public functions in libcurl:  100
+ Contributors:                 3619
+
+This release includes the following changes:
+
+
+This release includes the following bugfixes:
+
+ o docs: minor wording tweaks
+ o badwords: combine the whitelisting into a single regex [1]
+
+This release includes the following known bugs:
+
+ See https://curl.se/docs/knownbugs.html
+
+For all changes ever done in curl:
+
+ See https://curl.se/changes.html
+
+Planned upcoming removals include:
+
+ o NTLM support becomes opt-in
+ o RTMP support
+ o SMB support becomes opt-in
+ o Support for c-ares versions before 1.16.0
+ o Support for CMake 3.17 and earlier
+ o TLS-SRP support
+
+ See https://curl.se/dev/deprecate.html
+
+This release would not have looked like this without help, code, reports and
+advice from friends like these:
+
+  Daniel Stenberg
+  (1 contributors)
+
+References to bug reports and discussions on issues:
+
+ [1] = https://curl.se/bug/?i=20880
