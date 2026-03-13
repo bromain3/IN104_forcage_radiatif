@@ -27,7 +27,7 @@ elseif(APPLE)
     set(CURL_USE_SECTRANSP  ON  CACHE BOOL "" FORCE)
     set(CURL_USE_OPENSSL    OFF CACHE BOOL "" FORCE)
 else()
-    # Linux : OpenSSL, available in each distribution
+    # Linux : OpenSSL, available in each distribution (at least it should be)
     set(CURL_USE_OPENSSL    ON  CACHE BOOL "" FORCE)
 endif()
 
