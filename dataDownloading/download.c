@@ -2,6 +2,7 @@
 #include <stdlib.h>  // using exit()
 #include <curl/curl.h>  // using curl
 #include <sys/stat.h>  // creating folder and having system infos
+#include <string.h>  // for strcmp()
 #include "spe_ids_binding.h"
 
 void check_curl_init(CURL *curl) {

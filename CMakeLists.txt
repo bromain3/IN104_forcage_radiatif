@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.1)  # Cmake minimal version for compatibility
+cmake_minimum_required(VERSION 3.25.1)  # Cmake minimal version for compatibility
 project(code_C C)  # project name and languages
 
 set(CMAKE_C_STANDARD 23)  # C version (2023)
@@ -8,7 +8,14 @@ set(BUILD_SHARED_LIBS        OFF CACHE BOOL "" FORCE)
 set(BUILD_CURL_EXE           OFF CACHE BOOL "" FORCE)
 set(BUILD_TESTING            OFF CACHE BOOL "" FORCE)
 set(CURL_DISABLE_TESTS       ON  CACHE BOOL "" FORCE)
-
+set(CURL_DISABLE_LIBPSL     ON  CACHE BOOL "" FORCE)
+set(CURL_DISABLE_LDAP       ON  CACHE BOOL "" FORCE)
+set(CURL_DISABLE_LDAPS      ON  CACHE BOOL "" FORCE)
+set(USE_NGHTTP2             OFF CACHE BOOL "" FORCE)
+set(CURL_BROTLI             OFF CACHE BOOL "" FORCE)
+set(CURL_ZSTD               OFF CACHE BOOL "" FORCE)
+set(CURL_USE_LIBSSH2        OFF CACHE BOOL "" FORCE)
+set(CURL_USE_LIBPSL         OFF CACHE BOOL "" FORCE)
 
 # each OS has a builtin SSL system lib that we can use
 if(WIN32)
