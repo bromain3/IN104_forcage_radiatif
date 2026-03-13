@@ -28,6 +28,6 @@ endif()
 # executable
 add_subdirectory(curl)  # adding curl to the list of file to look in for libraries
 
-add_executable(download download.c)  # defining a new executable and the files to compile for making it
+add_executable(download download.c spe_ids_binding.h)  # defining a new executable and the files to compile for making it
 
 target_link_libraries(download PRIVATE CURL::libcurl)  # linking curl libraries to the download code

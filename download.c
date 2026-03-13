@@ -2,6 +2,7 @@
 #include <stdlib.h>  // using exit()
 #include <curl/curl.h>  // using curl
 #include <sys/stat.h>  // creating folder and having system infos
+#include "spe_ids_binding.h"
 
 void check_curl_init(CURL *curl) {
     // if the pointer *curl == 0 (NULL pointer), it means that
@@ -53,6 +54,17 @@ void parse_arguments(char *argv[], char **spe, char **numi, char **numa) {
     *numa = argv[3];
 }
 
+const char *get_iso_ids_list(char *specie) {
+    for (int i=0; i<len_SPE2IDS; i++) {
+        if (strcmp(specie, SPE2IDS[i].spe_name) == 0) {
+            return SPE2IDS[i].iso_ids_list;
+        }
+    }
+    fprintf(stderr, "Specie %s does not exist\n", specie);
+    exit(1);
+    return NULL;
+}
+
 int main(int argc, char* argv[]) {
 
     // checking that arguments are valide
@@ -60,11 +72,15 @@ int main(int argc, char* argv[]) {
 
     // Variables definition
     char *specie;
-    char *iso_ids_list = "1,2,3";
+    const char *iso_ids_list;
     char *nu_min, *nu_max;
 
     // parse arguments
     parse_arguments(argv, &specie, &nu_min, &nu_max);
+
+    // get the ids to use for download
+    iso_ids_list = get_iso_ids_list(specie);
+    printf("%s", iso_ids_list);
 
     // URL formating, snprintf copies formated url to rhe url var and prevents char url overflow
     char url[512]; // max size of the URL
