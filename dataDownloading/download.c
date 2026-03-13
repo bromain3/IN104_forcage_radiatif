@@ -30,8 +30,8 @@ void check_file_init(FILE *file, CURL *curl) {
 }
 
 void check_download_success(CURLcode res, CURL *curl) {
-    // check curl error first (network, timeout, DNS, SSL, etc.)
-    if (res != CURLE_OK) {
+    // check curl error first (network, timeout, DNS, SSL, etc.) but ignor the partial file error as it may be linked to HITRAN server issue
+    if (res != CURLE_OK && res != CURLE_PARTIAL_FILE) {
         fprintf(stderr, "CURL error: %s\n", curl_easy_strerror(res));
         exit(1);
     }
@@ -42,6 +42,7 @@ void check_download_success(CURLcode res, CURL *curl) {
         fprintf(stderr, "Erreur HTTP %ld\n", http_code);
         exit(1);
     }
+    printf("File downloaded successfully");
 }
 
 void check_arguments(int argc, char *argv[]) {
