@@ -28,25 +28,47 @@ void check_file_init(FILE *file, CURL *curl) {
 }
 
 void check_download_success(CURLcode res, CURL *curl) {
-    // get http return code
+    // check curl error first (network, timeout, DNS, SSL, etc.)
+    if (res != CURLE_OK) {
+        fprintf(stderr, "CURL error: %s\n", curl_easy_strerror(res));
+        exit(1);
+    }
+    // then check http return code
     long http_code = 0;
     curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &http_code);
-    if (http_code != 200) {  // 200 is the return code for saying that everything went well
+    if (http_code != 200) {
         fprintf(stderr, "Erreur HTTP %ld\n", http_code);
         exit(1);
     }
 }
 
-int main(void) {
+void check_arguments(int argc, char *argv[]) {
+    if (argc <= 0) {printf("The number of arguments is negative, your computer is brocken"); exit(1);}
+    if (argc != 4) {printf("You must give exactly 3 arguments: name nu_min nu_max"); exit(1);}
+}
 
-    // Variables definition (to be replaced by comande line args
-    const char *specie = "CO2";
-    const char *iso_ids_list = "1,2,3";
-    unsigned int nu_min = 0, nu_max = 2100;
+void parse_arguments(char *argv[], char **spe, char **numi, char **numa) {
+    *spe = argv[1];
+    *numi = argv[2];
+    *numa = argv[3];
+}
+
+int main(int argc, char* argv[]) {
+
+    // checking that arguments are valide
+    check_arguments(argc, argv);
+
+    // Variables definition
+    char *specie;
+    char *iso_ids_list = "1,2,3";
+    char *nu_min, *nu_max;
+
+    // parse arguments
+    parse_arguments(argv, &specie, &nu_min, &nu_max);
 
     // URL formating, snprintf copies formated url to rhe url var and prevents char url overflow
     char url[512]; // max size of the URL
-    snprintf(url, sizeof(url), "https://hitran.org/lbl/api?iso_ids_list=%s&numin=%u&numax=%u", iso_ids_list, nu_min, nu_max);
+    snprintf(url, sizeof(url), "https://hitran.org/lbl/api?iso_ids_list=%s&numin=%s&numax=%s", iso_ids_list, nu_min, nu_max);
 
     // saving path formating
     char save_path[512]; // max size of the saving path
@@ -70,10 +92,10 @@ int main(void) {
     // Curl request setup
     curl_easy_setopt(curl, CURLOPT_URL, url);  // setting request URL
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);  // setting non default stdout (setting output file)
-    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);  // activating progressbar
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 600);  // global timout of 10 minutes
-    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 30);  // timout set to 30 secondes if there is a really low volume of data
-    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 1);  // the "low volume of data" threshold in byte/s
+    curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0L);  // activating progressbar
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 600L);  // global timout of 10 minutes
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_TIME, 30L);  // timout set to 30 secondes if there is a really low volume of data
+    curl_easy_setopt(curl, CURLOPT_LOW_SPEED_LIMIT, 1L);  // the "low volume of data" threshold in byte/s
 
     // Making the request
     CURLcode res = curl_easy_perform(curl);
