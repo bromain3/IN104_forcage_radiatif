@@ -80,7 +80,6 @@ int main(int argc, char* argv[]) {
 
     // get the ids to use for download
     iso_ids_list = get_iso_ids_list(specie);
-    printf("%s", iso_ids_list);
 
     // URL formating, snprintf copies formated url to rhe url var and prevents char url overflow
     char url[512]; // max size of the URL
